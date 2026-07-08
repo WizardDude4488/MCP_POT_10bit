@@ -342,6 +342,20 @@ MCP42100::MCP42100(uint8_t select, uint8_t reset, uint8_t shutdown, uint8_t data
   _maxOhm  = 100000;
 }
 
+////////////////////////////////////////////////////////////////////////////
+//
+//  DERIVED CLASS MCP41U83
+//
+MCP41U83::MCP41U83(uint8_t select, uint8_t reset, uint8_t shutdown, __SPI_CLASS__ * mySPI)
+        :MCP_POT(select, reset, shutdown, mySPI)
+{
+  _pmCount = 1;
+  _maxOhm  = 5000;
+}
+
+
+
+
 
 //  -- END OF FILE --
 
