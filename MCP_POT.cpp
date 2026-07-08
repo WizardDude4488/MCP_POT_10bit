@@ -31,7 +31,7 @@ MCP_POT::MCP_POT(uint8_t select, uint8_t reset, uint8_t shutdown, __SPI_CLASS__ 
 
 
 //       SOFTWARE SPI
-MCP_POT::MCP_POT(uint8_t select, uint8_t reset, uint8_t shutdown, uint8_t dataOut, uint8_t clock)
+MCP_POT::MCP_POT(uint8_t select, uint8_t reset, uint8_t shutdown, uint16_t dataOut, uint8_t clock)
 {
   _pmCount  = 2;
   _select   = select;
@@ -44,7 +44,7 @@ MCP_POT::MCP_POT(uint8_t select, uint8_t reset, uint8_t shutdown, uint8_t dataOu
 }
 
 
-void MCP_POT::begin(uint8_t value)
+void MCP_POT::begin(uint16_t value)
 {
   pinMode(_select, OUTPUT);
   digitalWrite(_select, HIGH);
@@ -73,7 +73,7 @@ void MCP_POT::begin(uint8_t value)
 }
 
 
-void MCP_POT::reset(uint8_t value)
+void MCP_POT::reset(uint16_t value)
 {
   digitalWrite(_reset, LOW);
   digitalWrite(_reset, HIGH);
@@ -86,7 +86,7 @@ void MCP_POT::reset(uint8_t value)
 //
 //  SET VALUE
 //
-bool MCP_POT::setValue(uint8_t value)
+bool MCP_POT::setValue(uint16_t value)
 {
   _value[0] = value;
   _value[1] = value;
@@ -95,7 +95,7 @@ bool MCP_POT::setValue(uint8_t value)
 }
 
 
-bool MCP_POT::setValue(uint8_t pm, uint8_t value)
+bool MCP_POT::setValue(uint8_t pm, uint16_t value)
 {
   if (pm >= _pmCount) return false;
   _value[pm] = value;
@@ -127,12 +127,12 @@ uint32_t MCP_POT::getMaxOhm()
 
 void MCP_POT::setOhm(uint8_t pm, uint32_t ohm)
 {
-  setValue(pm, round(ohm * 255.0 / _maxOhm));
+  setValue(pm, round(ohm * 1023 / _maxOhm));
 }
 
 uint32_t MCP_POT::getOhm(uint8_t pm)
 {
-  return round(getValue(pm) * (_maxOhm / 255.0));
+  return round(getValue(pm) * (_maxOhm / 1023));
 }
 
 
@@ -203,7 +203,7 @@ bool MCP_POT::usesHWSPI()
 //
 //  PROTECTED
 //
-void MCP_POT::updateDevice(uint8_t pm, uint8_t value, uint8_t cmd)
+void MCP_POT::updateDevice(uint8_t pm, uint16_t value, uint8_t cmd)
 {
   uint8_t command = cmd;
   if (pm == 0) command |= 1;   //  01
@@ -353,6 +353,12 @@ MCP41U83::MCP41U83(uint8_t select, uint8_t reset, uint8_t shutdown, __SPI_CLASS_
   _maxOhm  = 5000;
 }
 
+MCP41010::MCP41010(uint8_t select, uint8_t reset, uint8_t shutdown, uint16_t dataOut, uint8_t clock)
+        :MCP_POT(select, reset, shutdown, dataOut, clock)
+{
+  _pmCount = 1;
+  _maxOhm  = 5000;
+}
 
 
 
