@@ -15,11 +15,11 @@
 #define MCP_POT_LIB_VERSION           (F("0.2.4"))
 
 #ifndef MCP_POT_MIDDLE_VALUE
-#define MCP_POT_MIDDLE_VALUE          128
+#define MCP_POT_MIDDLE_VALUE          512
 #endif
 
 #ifndef MCP_POT_MAX_VALUE
-#define MCP_POT_MAX_VALUE             255
+#define MCP_POT_MAX_VALUE             1023
 #endif
 
 
